@@ -1,4 +1,4 @@
-大家好，我是张师傅。为了能帮助到更多对源码感兴趣、想学会看源码、提升自己后端技术能力的同学。我倾力持续组织了一年每周大家一起学习 Netty 源码共读活动，感兴趣的可以 点此扫码加我微信 zhangya_no1 参与。
+大家好，我是张师傅。为了能帮助到更多对源码感兴趣、想学会看源码、提升自己后端技术能力的同学。组织了大家一起学习源码共读活动。
 
 我对各个中间件源码非常感兴趣，过去一段时间阅读了 MySQL、JVM、Nginx、Netty、Spring、Linux 内核相关的源码，也写过很多关于根据源码来定位问题的文章，详见我的掘金博客 https://juejin.cn/user/430664257374270/posts
 
@@ -59,8 +59,3 @@ git clone https://github.com/arthur-zhang/netty-study.git
 - 什么是 tcp 的 keep-alive
 - 有了 TCP 层面的 keep-alive 为什么还需要应用层 keepalive ?
 - Netty 的 Idle 检测是如何实现的，是用 HashedWheelTimer 时间轮吗？
-
-
-
-
-
