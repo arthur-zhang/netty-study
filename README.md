@@ -24,38 +24,89 @@ git clone https://github.com/arthur-zhang/netty-study.git
 
 ## 源码学习
 
-### Netty 是如何启动服务的
+### Netty 服务端启动服务流程
 
-- Netty 使用的是那种 I/O 模型
-- 如何创建 selector
-- 在哪里做 bind、listen
-- backlog 参数有什么作用
-- boss thread 和 worker thread 的职责是什么
+在 `sun.nio.ch.ServerSocketChannelImpl#bind` 上打断点，看调用堆栈。
 
-关注：
-`io.netty.channel.nio.NioEventLoop#openSelector`，
-`io.netty.bootstrap.AbstractBootstrap#bind(int)` 等
+
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691080655708.jpg)
+
+
+> 任务：backlog 参数有什么作用，请仔细研究这个重要参数。
+
+
+
+阅读 `io.netty.bootstrap.ServerBootstrap#init` 查看 Netty 配置服务端启动流程
+
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691076983047.jpg)
+
+> 任务：阅读 `ServerBootstrapAcceptor` 类，搞清楚这个类的职责
+
+
+在 `io.netty.channel.nio.AbstractNioChannel#AbstractNioChannel 构造函数上打断点，阅读构造函数的调用堆栈
+
+
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691084651971.jpg)
+
+
+> 任务：阻塞非阻塞、同步异步的最底层的区别是什么？这里为什么要设置为非阻塞
+
+在 `io.netty.channel.nio.AbstractNioChannel#doBeginRead` 上打断点，查看 Netty 是如何注册 Accept 事件的。
+
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691089771399.jpg)
+
+
+> 任务：梳理 Netty 启动服务端的所有流程
+> 在哪里创建 Channel
+> 如何初始化 Channel、注册 handler
+> 如何做端口 bind 触发 active 事件，注册 accept 事件，开始准备接收连接
+
 
 ### Netty 的连接创建是如何进行的
 
-- 什么是事件循环
+
+
+在 `io.netty.channel.nio.NioEventLoop#processSelectedKey(java.nio.channels.SelectionKey, io.netty.channel.nio.AbstractNioChannel)` 打断点，然后使用 nc 或者 telnet 连接上 Netty
+
+```
+nc localhost 8888
+```
+
+
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691101430154.jpg)
+
+阅读堆栈，溯源调用链路
+
+> 任务：分析 `io.netty.channel.nio.NioEventLoop#run`做了哪些事情
+
+
+> 额外任务
 - 什么是 Reactor 模型
 - Netty 事件循环采用的是什么模式，与 Nginx、redis、muduo 等框架是一样的吗
-- accept 事件是在哪里注册的
 
 
-关注：`io.netty.channel.nio.NioEventLoop#run`
 
 ### Netty 读取、发送数据流程
 
-- Netty 读数据时，使用了哪些 Allocator
-- Netty 在 linux 上采用的是边缘触发还是水平触发
-- tcp 发送缓冲区满、接收缓存区满时会发生什么
+在 `io.netty.channel.nio.AbstractNioByteChannel.NioByteUnsafe#read` 上打断点，在 nc 中发送数据
 
-关注：`io.netty.channel.ServerChannelRecvByteBufAllocator`、`io.netty.channel.AdaptiveRecvByteBufAllocator` 等
+![](https://store-g1.seewo.com/imgs/2022_11_22_16691104778193.jpg)
+
+> 任务：分析 allocator 变量，学习 Netty 中所有的 Allocator
+
+> 额外任务：Netty 在 linux 上采用的是边缘触发还是水平触发
+
+
+在 `me.ya.study.netty.handler.MyEchoServerHandler#channelRead` 打断点，跟进 write 方法，同时在 `io.netty.channel.AbstractChannelHandlerContext#write(java.lang.Object, io.netty.channel.ChannelPromise)` 上打断点，分析 Netty 发送数据的全过程。
+
+> 任务：分析 Netty 发送数据的全流程，画时序图
+
+
+## 额外任务
 
 ### Netty Idle 检测是如何实现的
 
 - 什么是 tcp 的 keep-alive
 - 有了 TCP 层面的 keep-alive 为什么还需要应用层 keepalive ?
 - Netty 的 Idle 检测是如何实现的，是用 HashedWheelTimer 时间轮吗？
+
