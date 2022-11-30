@@ -31,7 +31,6 @@ git clone https://github.com/arthur-zhang/netty-study.git
 
 ![](https://store-g1.seewo.com/imgs/2022_11_22_16691080655708.jpg)
 
-
 > 任务：backlog 参数有什么作用，请仔细研究这个重要参数。
 
 
@@ -40,10 +39,11 @@ git clone https://github.com/arthur-zhang/netty-study.git
 
 ![](https://store-g1.seewo.com/imgs/2022_11_22_16691076983047.jpg)
 
+
 > 任务：阅读 `ServerBootstrapAcceptor` 类，搞清楚这个类的职责
 
 
-在 `io.netty.channel.nio.AbstractNioChannel#AbstractNioChannel 构造函数上打断点，阅读构造函数的调用堆栈
+在 `io.netty.channel.nio.AbstractNioChannel#AbstractNioChannel` 构造函数上打断点，阅读构造函数的调用堆栈
 
 
 ![](https://store-g1.seewo.com/imgs/2022_11_22_16691084651971.jpg)
