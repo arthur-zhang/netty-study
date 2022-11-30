@@ -110,3 +110,41 @@ nc localhost 8888
 - 有了 TCP 层面的 keep-alive 为什么还需要应用层 keepalive ?
 - Netty 的 Idle 检测是如何实现的，是用 HashedWheelTimer 时间轮吗？
 
+
+# 第二周
+
+阅读 NioEventLoopGroup 的代码
+
+> 任务：NioEventLoopGroup 默认的构造函数会起多少线程，可以通过什么方式修改？这些线程的职责是什么
+
+
+早期 Java 版本 NIO 存在严重的 epoll 空轮询 bug，请查询相关的文章。
+
+
+![](https://store-g1.seewo.com/imgs/2022_11_30_16697908751570.jpg)
+
+
+> 任务 : 阅读 NioEventLoop.java 的代码，尝试分析 Netty 是如何解决 JDK 中的 epoll 空轮询 BUG 的？
+
+
+Netty 内部有一个核心的类 ByteToMessageDecoder，它定义了两个累加器  MERGE_CUMULATOR、COMPOSITE_CUMULATOR
+
+
+![](https://store-g1.seewo.com/imgs/2022_11_30_16697913516892.jpg)
+
+> 任务 1：分析这两个累加器有什么不同
+
+> 任务2：写一个 LengthFieldBasedFrameDecoder 定长编码的消息拆包类，实现如下格式消息的解码，并按逗号拼接
+
+| Length | Content |
+|---|---|
+| 4 字节  |变长  |
+
+
+额外任务：零拷贝知识
+
+任务 1：了解什么是零拷贝，C/C++中如何实现零拷贝
+
+任务 2：Java 中如何实现零拷贝
+
+任务 3：netty 是如何实现零拷贝的
