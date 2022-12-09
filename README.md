@@ -148,3 +148,48 @@ Netty 内部有一个核心的类 ByteToMessageDecoder，它定义了两个累�
 任务 2：Java 中如何实现零拷贝
 
 任务 3：netty 是如何实现零拷贝的
+
+
+
+
+## 第三周
+
+Netty 的数据读写是以 ByteBuf 为单位的，它的结构如下：
+
+
+![](https://store-g1.seewo.com/imgs/2022_12_09_16705461322023.jpg)
+
+任务 1：阅读 ByteBuf 的代码，总结它与 Java NIO 中的 ByteBuffer 有什么区别？
+
+
+ByteBuf 可以通过扩展底层的数组来实现自动扩展。当缓冲区的容量不足以存储新的数据时，ByteBuf 就会自动扩展底层数组的大小，以便容纳更多的数据
+
+任务 2：Netty 中的 ByteBuf 源码是如何实现自动扩展的，请写出伪代码
+
+
+任务 3：阅读相关代码，ByteBuf 是线程安全的吗？
+
+任务 4：为什么 ByteBuf 读写需要加锁？
+
+
+ByteBuf 支持多种内存管理模型，包括堆内内存（heap buffer）、堆外内存（direct buffer）和内存池（pooled buffer）。
+
+任务 5：堆外内存、堆外内存、内存池的优缺点有哪些，分别用在哪些场景
+
+任务 6：下面的分配方式分别对应上面的哪种类型
+
+```
+ByteBufAllocator allocator = ByteBufAllocator.DEFAULT;
+ByteBuf buffer = allocator.heapBuffer();
+
+ByteBufAllocator allocator = ByteBufAllocator.DEFAULT;
+ByteBuf buffer = allocator.directBuffer();
+
+ByteBufAllocator allocator = ByteBufAllocator.DEFAULT;
+ByteBuf buffer = allocator.pooledBuffer();
+
+```
+
+ByteBuf 的读写操作是非阻塞的，阅读相关代码。
+
+任务 7：非阻塞特性是通过 ByteBuf 的什么原理实现的
