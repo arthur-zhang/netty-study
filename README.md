@@ -193,3 +193,45 @@ ByteBuf buffer = allocator.pooledBuffer();
 ByteBuf 的读写操作是非阻塞的，阅读相关代码。
 
 任务 7：非阻塞特性是通过 ByteBuf 的什么原理实现的
+
+
+# 第四周
+
+Netty Recycler 是 Netty 中的对象回收池，用于复用对象，减少内存分配和 GC 的次数。它通过使用双向链表维护对象池，在对象被回收时将其插入链表的头部，在对象需要被分配时从链表的头部取出。这样可以减少内存分配的次数，提高系统的效率。
+
+
+![](https://store-g1.seewo.com/imgs/2022_12_19_16714584750581.jpg)
+
+任务 1：用 Recycler 写一个 demo 实现自定义类 User 的对象复用
+
+任务 2：阅读 Recycler 轻量级对象池的源码，画出 Recycler 的内部结构图
+
+
+FastThreadLocal 是 Netty 中的快速线程局部变量工具，在高并发场景下表现优异。
+
+
+![](https://store-g1.seewo.com/imgs/2022_12_19_16714587557032.jpg)
+
+FastThreadLocal 是 Netty 重新设计的更快的 ThreadLocal，主要实现涉及：
+
+* FastThreadLocalThread
+* FastThreadLocal
+* InternalThreadLocalMap
+
+阅读相关类的代码：
+
+任务 3：分析 FastThreadLocal 的创建过程
+
+任务 4：分析 FastThreadLocal 的 get、set 方法实现
+
+
+![](https://store-g1.seewo.com/imgs/2022_12_19_16714598108716.jpg)
+
+
+![](https://store-g1.seewo.com/imgs/2022_12_19_16714598308679.jpg)
+
+
+任务 5：分析 FastThreadLocal 为什么会比 Java 中的 ThreadLocal 性能更加优秀？
+
+
+任务 6：分析 FastThreadLocal 在了 Netty 的哪些场景比较适用
